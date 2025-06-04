@@ -1,4 +1,5 @@
 import random
+import time
 import comfy.samplers
 
 class RandomSamplerSchedulerSteps:
@@ -15,14 +16,6 @@ class RandomSamplerSchedulerSteps:
                                    "ipndm_v,kl_optimal,40"
                     }
                 ),
-                "seed": ("INT", {"default": 0, "min": 0, "max": 4294967295}),
-                "mode": (
-                    "STRING",
-                    {
-                        "default": "fixed",
-                        "choices": ["fixed", "random", "increment", "decrement"]
-                    }
-                ),
             }
         }
 
@@ -31,27 +24,17 @@ class RandomSamplerSchedulerSteps:
         comfy.samplers.KSampler.SCHEDULERS,
         "INT",
         "STRING",
-        "INT"
     )
-    RETURN_NAMES = ("sampler", "scheduler", "steps", "chosen_line", "used_seed")
+    RETURN_NAMES = ("sampler", "scheduler", "steps", "chosen_line")
     FUNCTION = "run"
     CATEGORY = "Custom/Outpaint"
 
-    def run(self, preset_text, seed, mode):
+    def run(self, preset_text):
         lines = [line.strip() for line in preset_text.strip().splitlines() if line.strip()]
         if not lines:
             raise ValueError("No valid presets provided.")
 
-        if mode == "random":
-            used_seed = random.randint(0, 4294967295)
-        elif mode == "increment":
-            used_seed = seed + 1
-        elif mode == "decrement":
-            used_seed = seed - 1 if seed > 0 else 0
-        else:  # fixed
-            used_seed = seed
-
-        random.seed(used_seed)
+        random.seed(time.time())
         index = random.randint(0, len(lines) - 1)
         line = lines[index]
 
@@ -65,7 +48,7 @@ class RandomSamplerSchedulerSteps:
         except ValueError:
             raise ValueError(f"Steps must be an integer: {steps_str}")
 
-        return (sampler, scheduler, steps, line, used_seed)
+        return (sampler, scheduler, steps, line)
 
 
 NODE_CLASS_MAPPINGS = {
