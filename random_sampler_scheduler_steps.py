@@ -20,7 +20,7 @@ class RandomSamplerSchedulerSteps:
         comfy.samplers.KSampler.SAMPLERS,
         comfy.samplers.KSampler.SCHEDULERS,
         "INT",
-        "STRING",  # 추가 출력: 전체 선택된 라인
+        "STRING",  # Optional Debug
     )
     RETURN_NAMES = ("sampler", "scheduler", "steps", "chosen_line")
     FUNCTION = "run"
