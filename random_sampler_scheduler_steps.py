@@ -1,4 +1,5 @@
 import random
+import comfy.samplers
 
 class RandomSamplerSchedulerSteps:
     @classmethod
@@ -15,7 +16,11 @@ class RandomSamplerSchedulerSteps:
             }
         }
 
-    RETURN_TYPES = ("STRING", "STRING", "INT")
+    RETURN_TYPES = (
+        comfy.samplers.KSampler.SAMPLERS,     # sampler 콤보 타입
+        comfy.samplers.KSampler.SCHEDULERS,   # scheduler 콤보 타입
+        "INT"                                  # steps
+    )
     RETURN_NAMES = ("sampler", "scheduler", "steps")
     FUNCTION = "run"
     CATEGORY = "Custom/Outpaint"
@@ -39,6 +44,7 @@ class RandomSamplerSchedulerSteps:
             raise ValueError(f"Steps must be an integer: {steps_str}")
 
         return (sampler, scheduler, steps)
+
 
 NODE_CLASS_MAPPINGS = {
     "RandomSamplerSchedulerSteps": RandomSamplerSchedulerSteps,
