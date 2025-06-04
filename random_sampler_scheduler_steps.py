@@ -1,5 +1,3 @@
-import random
-import time
 import comfy.samplers
 
 class RandomSamplerSchedulerSteps:
@@ -16,6 +14,11 @@ class RandomSamplerSchedulerSteps:
                                    "ipndm_v,kl_optimal,40"
                     }
                 ),
+                "index_seed": ("INT", {
+                    "default": 0,
+                    "min": 0,
+                    "max": 4294967295
+                })
             }
         }
 
@@ -29,13 +32,13 @@ class RandomSamplerSchedulerSteps:
     FUNCTION = "run"
     CATEGORY = "Custom/Outpaint"
 
-    def run(self, preset_text):
+    def run(self, preset_text, index_seed):
         lines = [line.strip() for line in preset_text.strip().splitlines() if line.strip()]
-        if not lines:
+        count = len(lines)
+        if count == 0:
             raise ValueError("No valid presets provided.")
 
-        random.seed(time.time())
-        index = random.randint(0, len(lines) - 1)
+        index = index_seed % count
         line = lines[index]
 
         parts = [x.strip() for x in line.split(",")]
