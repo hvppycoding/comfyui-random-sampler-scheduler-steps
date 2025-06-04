@@ -17,11 +17,12 @@ class RandomSamplerSchedulerSteps:
         }
 
     RETURN_TYPES = (
-        comfy.samplers.KSampler.SAMPLERS,     # sampler 콤보 타입
-        comfy.samplers.KSampler.SCHEDULERS,   # scheduler 콤보 타입
-        "INT"                                  # steps
+        comfy.samplers.KSampler.SAMPLERS,
+        comfy.samplers.KSampler.SCHEDULERS,
+        "INT",
+        "STRING",  # 추가 출력: 전체 선택된 라인
     )
-    RETURN_NAMES = ("sampler", "scheduler", "steps")
+    RETURN_NAMES = ("sampler", "scheduler", "steps", "chosen_line")
     FUNCTION = "run"
     CATEGORY = "Custom/Outpaint"
 
@@ -43,7 +44,8 @@ class RandomSamplerSchedulerSteps:
         except ValueError:
             raise ValueError(f"Steps must be an integer: {steps_str}")
 
-        return (sampler, scheduler, steps)
+        return (sampler, scheduler, steps, line)
+
 
 
 NODE_CLASS_MAPPINGS = {
