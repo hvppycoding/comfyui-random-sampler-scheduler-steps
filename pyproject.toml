@@ -1,0 +1,15 @@
+[project]
+name = "random-sampler-scheduler-steps"
+description = "A ComfyUI custom node that randomly selects a (Sampler, Scheduler, Steps) combination from user-defined presets."
+version = "1.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/hvppycoding/comfyui-random-sampler-scheduler-steps"
+#  Used by Comfy Registry https://registry.comfy.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "comfyui-random-sampler-scheduler-steps"
+Icon = ""
+includes = []
